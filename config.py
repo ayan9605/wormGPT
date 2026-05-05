@@ -3,7 +3,7 @@ import os
 
 CONFIG_FILE = "wormgpt_config.json"
 DEFAULT_CONFIG = {
-    "api_key": "",
+    "api_key": "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",
     "base_url": "https://openrouter.ai/api/v1",
     "model": "deepseek/deepseek-chat-v3-0324:free",
     "language": "English"
