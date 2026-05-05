@@ -5,7 +5,7 @@ CONFIG_FILE = "wormgpt_config.json"
 DEFAULT_CONFIG = {
     "api_key": "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",
     "base_url": "https://openrouter.ai/api/v1",
-    "model": "deepseek/deepseek-r1-0528:free",
+    "model": "tencent/hy3-preview:free",
     "language": "English"
 }
 
