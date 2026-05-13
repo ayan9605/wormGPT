@@ -15,7 +15,7 @@ DEFAULT_CONFIG = {
     ),
     "model": os.getenv(
         "OPENROUTER_MODEL",
-        "tencent/hy3-preview:free"
+        ""
     ),
     "language": os.getenv(
         "LANGUAGE",
