@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 import uvicorn
 import requests
-import json
 import os
 
 from datetime import datetime
@@ -61,7 +60,6 @@ class ChatRequest(BaseModel):
 # CONFIG
 # =========================
 
-CONFIG_FILE = "wormgpt_config.json"
 PROMPT_FILE = "system-prompt.txt"
 
 SITE_URL = "https://github.com/00x0kafyy/worm-ai"
@@ -77,12 +75,12 @@ SUPPORTED_LANGUAGES = [
 ]
 
 # =========================
-# LOAD CONFIG
+# LOAD ENV CONFIG
 # =========================
 
 def load_config():
 
-    config = {
+    return {
         "api_key": os.getenv("OPENROUTER_API_KEY", ""),
         "base_url": os.getenv(
             "OPENROUTER_BASE_URL",
@@ -97,35 +95,6 @@ def load_config():
             "English"
         )
     }
-
-    # Optional JSON overrides
-    if os.path.exists(CONFIG_FILE):
-
-        try:
-            with open(CONFIG_FILE, "r") as f:
-                saved = json.load(f)
-
-            config.update(saved)
-
-        except:
-            pass
-
-    return config
-
-# =========================
-# SAVE CONFIG
-# =========================
-
-def save_config(config):
-
-    # Never save secrets
-    safe_config = {
-        "language": config.get("language"),
-        "model": config.get("model")
-    }
-
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(safe_config, f, indent=2)
 
 # =========================
 # SYSTEM PROMPT
@@ -184,13 +153,8 @@ def call_api(user_input: str):
             "English"
         )
 
-        if detected_lang != config["language"]:
-
-            config["language"] = detected_lang
-            save_config(config)
-
     except:
-        pass
+        detected_lang = config["language"]
 
     try:
 
@@ -224,7 +188,8 @@ def call_api(user_input: str):
             timeout=30
         )
 
-        # Better error handling
+        # Better errors
+
         if response.status_code == 401:
             raise HTTPException(
                 status_code=401,
